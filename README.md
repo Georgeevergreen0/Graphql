@@ -1,1 +1,1 @@
-# Graphql node server and Apollo Client
+# Graphql NodeJS Server and Apollo Client.
