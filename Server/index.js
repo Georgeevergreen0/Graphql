@@ -11,8 +11,9 @@ db.once('open', function () {
     console.log("connected to database")
 });
 
-// graphQL schema
+// graphQL yes
 const schema = require("./schema/graphql");
+
 app.use("/graphql", expressqlHTTP({
     schema,
     graphiql: true

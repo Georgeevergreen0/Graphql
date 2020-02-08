@@ -12,10 +12,9 @@ let BookType = new GraphQLObjectType({
         genre: { type: GraphQLString },
         author: {
             type: AuthorType,
-            resolve: (parent, args) => {
-                return authors.find((value) => {
-                    return value.id == parent.authorId
-                })
+            resolve: async (parent, args) => {
+                let book = await Author.findById(parent.authorId);
+                return book;
             }
         }
     })
@@ -29,10 +28,9 @@ let AuthorType = new GraphQLObjectType({
         age: { type: GraphQLInt },
         books: {
             type: new GraphQLList(BookType),
-            resolve: (parent, args) => {
-                return books.filter((value) => {
-                    return value.authorId == parent.id
-                })
+            resolve: async (parent, args) => {
+                let book = await Book.find({ authorId: parent.id })
+                return book
             }
         }
     })
@@ -46,10 +44,9 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLID }
             },
-            resolve: (parent, args) => {
-                return books.find((value) => {
-                    return value.id == args.id
-                })
+            resolve: async (parent, args) => {
+                let book = await Book.findById(args.id)
+                return book
             }
         },
         author: {
@@ -57,21 +54,22 @@ const RootQuery = new GraphQLObjectType({
             args: {
                 id: { type: GraphQLID }
             },
-            resolve: (parent, args) => {
-                return authors.find((value) => {
-                    return value.id == args.id
-                })
+            resolve: async (parent, args) => {
+                let author = await Author.findById(args.id)
+                return author;
             }
         },
         books: {
             type: new GraphQLList(BookType),
-            resolve: (parent, args) => {
+            resolve: async (parent, args) => {
+                let books = await Book.find()
                 return books
             }
         },
         authors: {
             type: new GraphQLList(AuthorType),
-            resolve: (parent, args) => {
+            resolve: async (parent, args) => {
+                let authors = await Author.find()
                 return authors
             }
         },
